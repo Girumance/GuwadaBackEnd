@@ -20,10 +20,6 @@ public class UserPrincipal implements UserDetails {
         this.account=account;
     }
 
-
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(account.getRole()));
