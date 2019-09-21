@@ -27,7 +27,7 @@ public class Account{
     private String blockNumber;
     private String roomNumber;
 
-    private boolean isAccountBlocked=true;
+    private boolean isAccountNonBlocked=true;
     private boolean isAccountEnabled=true;
 
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +29,8 @@ public class AccountService implements UserDetailsService {
 
         if(repository.findByEmail(account.getEmail())!=null)
             return false;
+
+        account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
 
         return repository.save(account) != null ? true : false;
 
