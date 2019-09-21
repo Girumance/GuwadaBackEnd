@@ -26,6 +26,9 @@ public class AccountService implements UserDetailsService {
 
     public boolean createAccount(Account account) {
 
+        if(repository.findByEmail(account.getEmail())!=null)
+            return false;
+
         return repository.save(account) != null ? true : false;
 
 

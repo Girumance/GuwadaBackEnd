@@ -19,7 +19,7 @@ public class Account{
     private String firstName;
     private String lastName;
     private String email;
-    private String phonenumber;
+    private String phoneNumber;
     private String password;
 
     private Role role;
