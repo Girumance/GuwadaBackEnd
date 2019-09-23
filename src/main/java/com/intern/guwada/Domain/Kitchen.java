@@ -16,6 +16,7 @@ public class Kitchen {
     @GeneratedValue
     private String id;
     private Role role;
+    private String title;
     private String descriptioin;
     private String ownerId;
     private String rating;
