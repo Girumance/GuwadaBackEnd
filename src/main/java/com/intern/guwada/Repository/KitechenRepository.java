@@ -11,4 +11,8 @@ public interface KitechenRepository extends MongoRepository<Kitchen,String> {
     @Query(value="{}",fields="{role:1,title:1,descriptioin:1,rating:1}")
     public ArrayList<Kitchen> findKitechenDetalils();
 
+    public Kitchen getByTitle(String title);
+
+    public Kitchen getByOwnerId(String id);
+
 }
