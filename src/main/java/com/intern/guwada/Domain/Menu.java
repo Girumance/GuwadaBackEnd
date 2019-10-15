@@ -17,7 +17,7 @@ public class Menu {
     private String price;
     private MenuType menuType;
     private String size;
-    private ArrayList<String> ingredients;
+    //private ArrayList<String> ingredients;
     private ArrayList<String> with;
-    private int rating;
+    //private int rating;
 }

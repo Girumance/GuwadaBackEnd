@@ -1,6 +1,7 @@
 package com.intern.guwada.Repository;
 
 import com.intern.guwada.Domain.Kitchen;
+import com.intern.guwada.Domain.Menu;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -13,6 +14,13 @@ public interface KitechenRepository extends MongoRepository<Kitchen,String> {
 
     public Kitchen getByTitle(String title);
 
+    @Query(value="{id:?0}")
     public Kitchen getByOwnerId(String id);
+
+
+    @Query(value="{id:?0}",fields = "{menu:1,id:0}")
+    public ArrayList<Kitchen> getMenuById(String id);
+
+
 
 }

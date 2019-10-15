@@ -23,6 +23,7 @@ public class Account{
     private String password;
 
     private Role role;
+    private boolean hasKitchen=false;
 
     private String blockNumber;
     private String roomNumber;
