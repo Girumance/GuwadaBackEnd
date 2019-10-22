@@ -22,6 +22,10 @@ public class KitechenService {
         return kitechenRepository.findKitechenDetalils();
     }
 
+    public Optional<Kitchen> getById(String id){
+        return kitechenRepository.findById(id);
+    }
+
     /**
      * It Returns -1 if the owner has already created a kitechen
      * It Returns 0 if the title is already exist
@@ -48,8 +52,13 @@ public class KitechenService {
     }
 
 
-    public ArrayList<Kitchen> getMenuById(String id) {
-        return kitechenRepository.getMenuById(id);
+    public ArrayList<Menu> getMenuById(String id) {
+
+        Kitchen kitchen=kitechenRepository.getMenuById(id);
+
+        ArrayList<Menu> menu=kitchen.getMenu();
+
+        return menu;
     }
 
 
@@ -117,6 +126,24 @@ public class KitechenService {
 
         return -1;
 
+    }
+
+    public Menu getMenuByTitle(String id,String title){
+
+        Optional<Kitchen> kitchen=kitechenRepository.findById(id);
+        if(kitchen.isPresent()){
+
+            for(Menu menu:kitchen.get().getMenu()){
+
+                if(menu.getTitle().equals(title))
+                    return  menu;
+
+
+            }
+
+        }
+
+        return null;
     }
 
 

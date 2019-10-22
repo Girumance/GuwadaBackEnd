@@ -19,7 +19,7 @@ public interface KitechenRepository extends MongoRepository<Kitchen,String> {
 
 
     @Query(value="{id:?0}",fields = "{menu:1,id:0}")
-    public ArrayList<Kitchen> getMenuById(String id);
+    public Kitchen getMenuById(String id);
 
 
 

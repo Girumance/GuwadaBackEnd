@@ -21,9 +21,9 @@ public class Order {
     private String id;
     private String customerId;
     private String kitchenId;
-    private OrderStatus orderStatus;
+    private OrderStatus orderStatus=OrderStatus.Pending;
     private ArrayList<MealOrder> mealorder;
-    private String date=new SimpleDateFormat("E yyyy-MM-dd HH:mm:ss").format(new Date());
+    private String date=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
 
 

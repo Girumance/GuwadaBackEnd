@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AccountService implements UserDetailsService {
     @Autowired
@@ -27,7 +29,7 @@ public class AccountService implements UserDetailsService {
 
     public boolean createAccount(Account account) {
 
-        if(repository.findByEmail(account.getEmail())!=null)
+        if (repository.findByEmail(account.getEmail()) != null)
             return false;
 
         account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
@@ -35,6 +37,10 @@ public class AccountService implements UserDetailsService {
         return repository.save(account) != null ? true : false;
 
 
+    }
+
+    public Optional<Account> getAccountbyId(String id) {
+        return repository.findById(id);
     }
 
 }

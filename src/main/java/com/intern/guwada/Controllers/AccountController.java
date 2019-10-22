@@ -16,7 +16,7 @@ public class AccountController {
     private AccountService service;
 
 
-    @PostMapping("/create")
+    @PostMapping("/signup")
     public boolean createAccount(@RequestBody Account account){
 
         if(service.createAccount(account)==true) return true;

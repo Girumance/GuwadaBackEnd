@@ -16,9 +16,9 @@ public class MealOrder {
     @Id
     private String id;
     private String quantitiy;
-    private String menuId;
+    private String title;
     private String additionalInformation;
-    private ArrayList<String> with;
+    //private ArrayList<String> with;
 
 
 

@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/kitechen")
+@CrossOrigin
 public class KitechenController {
 
     @Autowired
@@ -62,7 +63,7 @@ public class KitechenController {
     }
 
     @GetMapping("/getmenu/{id}")
-    public ArrayList<Kitchen> getMenuById(@PathVariable String id) {
+    public ArrayList<Menu> getMenuById(@PathVariable String id) {
 
         return kitechenService.getMenuById(id);
     }
@@ -85,8 +86,8 @@ public class KitechenController {
         return kitechenService.deleteMenu(id, title.getTitle());
 
     }
-
-    @GetMapping("/addMenu/{id}")
+    @CrossOrigin
+    @PostMapping("/addMenu/{id}")
     public int addMenu(@PathVariable String id,@RequestBody Menu menu){
 
         return kitechenService.addMenu(id,menu);
