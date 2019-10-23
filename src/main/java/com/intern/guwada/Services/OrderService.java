@@ -1,6 +1,7 @@
 package com.intern.guwada.Services;
 
 
+import com.intern.guwada.Components.CustomerOrder;
 import com.intern.guwada.Components.CustomerWrapper;
 import com.intern.guwada.Components.MealOrderWrapper;
 import com.intern.guwada.Components.OrderWrapper;
@@ -23,10 +24,24 @@ public class OrderService {
     @Autowired
     AccountService accountService;
 
-    public ArrayList<Order> getOrdersByKitchenId(String kitchenid) {
-
+    public ArrayList<CustomerOrder> getOrdersByKitchenId(String kitchenid) {
         Sort sort =new Sort(Sort.Direction.DESC, "date");
-        return orderRepository.getOrdersByKitchenId(kitchenid,sort);
+        ArrayList<Order> order=orderRepository.getOrdersByKitchenId(kitchenid,sort);
+        ArrayList<CustomerOrder> customerOrders=new ArrayList<>();
+        for (Order order1:order){
+
+            CustomerWrapper wrapper = new CustomerWrapper();
+            Optional<Account> account = accountService.getAccountbyId(order1.getCustomerId());
+            wrapper.setAttributes(account.get());
+            CustomerOrder customerOrder=new CustomerOrder();
+            customerOrder.setCustomer(wrapper);
+            customerOrder.setOrderId(order1.getId());
+            customerOrder.setDateTime(order1.getDate());
+            customerOrders.add(customerOrder);
+
+        }
+
+        return customerOrders;
     }
 
 
@@ -36,44 +51,24 @@ public class OrderService {
         return orderRepository.getOrdersByCustomerId(customerId);
     }
 
-    public OrderWrapper getOrderById(String id) {
+    public ArrayList<MealOrder> getOrderById(String id) {
         Optional<Order> order = orderRepository.findById(id);
+        OrderWrapper orderWrapper = new OrderWrapper();
         if (order.get()!=null) {
 
             CustomerWrapper wrapper = new CustomerWrapper();
             Optional<Account> account = accountService.getAccountbyId(order.get().getCustomerId());
             wrapper.setAttributes(account.get());
 
-            ArrayList<MealOrderWrapper> mealOrderWrappers = new ArrayList<>();
 
-            if(order.get().getMealorder()!=null) {
+           // orderWrapper.setCustomerWrapper(wrapper);
+            orderWrapper.setMealOrder(order.get().getMealorder());
+           // orderWrapper.setDate(order.get().getDate());
+            //orderWrapper.setOrderStatus(order.get().getOrderStatus());
 
-                for (MealOrder mealOrder : order.get().getMealorder()) {
-
-                    Menu menu = kitechenService.getMenuByTitle(order.get().getKitchenId(), mealOrder.getTitle());
-
-                    MealOrderWrapper mealOrderWrapper = new MealOrderWrapper();
-                    mealOrderWrapper.setMealOrder(mealOrder);
-                    ;
-                    mealOrderWrapper.setMenu(menu);
-
-                    mealOrderWrappers.add(mealOrderWrapper);
-
-                }
-
-            }
-
-            OrderWrapper orderWrapper = new OrderWrapper();
-            orderWrapper.setCustomerWrapper(wrapper);
-            orderWrapper.setMealOrderWrapper(mealOrderWrappers);
-            orderWrapper.setDate(order.get().getDate());
-            orderWrapper.setOrderStatus(order.get().getOrderStatus());
-
-
-            return orderWrapper;
+            return order.get().getMealorder();
 
         }
-
 
         return null;
     }

@@ -1,7 +1,9 @@
 package com.intern.guwada.Controllers;
 
 
+import com.intern.guwada.Components.CustomerOrder;
 import com.intern.guwada.Components.OrderWrapper;
+import com.intern.guwada.Domain.MealOrder;
 import com.intern.guwada.Domain.Order;
 import com.intern.guwada.Services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,12 @@ public class OrderController {
 
 
     @GetMapping("/kitchenorder/{id}")
-    public ArrayList<Order> getOrderByKitchen(@PathVariable  String id){
+    public ArrayList<CustomerOrder> getOrderByKitchen(@PathVariable  String id){
 
         return orderService.getOrdersByKitchenId(id);
     }
     @GetMapping("/get/{id}")
-    public OrderWrapper getOrderById(@PathVariable  String id){
+    public ArrayList<MealOrder> getOrderById(@PathVariable  String id){
 
         return orderService.getOrderById(id);
     }

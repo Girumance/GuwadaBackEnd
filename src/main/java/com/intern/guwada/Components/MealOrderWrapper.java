@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Data
 public class MealOrderWrapper {
 
-    private Menu menu;
     private MealOrder mealOrder;
 
 
