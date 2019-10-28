@@ -43,4 +43,9 @@ public class AccountService implements UserDetailsService {
         return repository.findById(id);
     }
 
+    public Account getAccoutnByEmail(String email){
+
+        return repository.findByEmail(email);
+    }
+
 }

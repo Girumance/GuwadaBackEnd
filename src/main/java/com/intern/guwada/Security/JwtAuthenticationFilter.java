@@ -1,9 +1,14 @@
 package com.intern.guwada.Security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.intern.guwada.Components.LogInModel;
+import com.intern.guwada.Domain.Account;
+import com.intern.guwada.Services.AccountService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.gson.GsonBuilderCustomizer;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,8 +30,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+
+    AccountService accountService;
+
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager,AccountService accountService) {
         this.authenticationManager = authenticationManager;
+        this.accountService=accountService;
     }
 
     @Override
@@ -39,7 +49,22 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
 
-            response.getWriter().println(JwtProperties.TOKE_PREFIX+token);
+         PrintWriter writer= response.getWriter();
+         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        Gson gson=new Gson();
+
+
+        Account account=accountService.getAccoutnByEmail(authResult.getName());
+
+         account.setPassword(JwtProperties.TOKE_PREFIX+token);
+
+
+        String data=gson.toJson(account);
+
+        writer.println(data);
+        writer.flush();
 
     }
 

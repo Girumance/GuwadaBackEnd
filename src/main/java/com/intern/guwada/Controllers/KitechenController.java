@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/kitechen")
-@CrossOrigin
+
 public class KitechenController {
 
     @Autowired
@@ -66,6 +66,13 @@ public class KitechenController {
     public ArrayList<Menu> getMenuById(@PathVariable String id) {
 
         return kitechenService.getMenuById(id);
+    }
+
+    @GetMapping("/isKitchen/{id}")
+    public boolean isKitchenAvaliableById(@PathVariable String id){
+
+
+        return  kitechenService.getByOwnerId(id)==null ? false :true;
     }
 
 
