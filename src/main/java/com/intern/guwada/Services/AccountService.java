@@ -1,6 +1,7 @@
 package com.intern.guwada.Services;
 
 
+import com.intern.guwada.Components.NewPassWrapper;
 import com.intern.guwada.Components.UserPrincipal;
 import com.intern.guwada.Domain.Account;
 import com.intern.guwada.Repository.AccountRepository;
@@ -47,5 +48,49 @@ public class AccountService implements UserDetailsService {
 
         return repository.findByEmail(email);
     }
+
+    public int changePassword(NewPassWrapper newPassWrapper){
+
+        Optional<Account> account=repository.findById(newPassWrapper.getOwnerId());
+
+        String password=new BCryptPasswordEncoder().encode(newPassWrapper.getCurrentPassword());
+
+        System.out.println(password);
+
+
+
+        if(new BCryptPasswordEncoder().matches(account.get().getPassword(),password)){
+
+            repository.delete(account.get());
+
+            String newPass=new BCryptPasswordEncoder().encode(newPassWrapper.getNewPassword());
+            account.get().setPassword(newPass);
+            repository.save(account.get());
+
+            return 1;
+
+        }
+
+
+        return  0;
+    }
+
+
+    public Account updateAccount(Account account){
+
+        Optional<Account> old=repository.findById(account.getId());
+
+        if(old.isPresent()){
+            repository.delete(old.get());
+            account.setPassword(old.get().getPassword());
+            account.setRole(old.get().getRole());
+
+            repository.save(account);
+            return account;
+        }
+        return  old.get();
+
+    }
+
 
 }

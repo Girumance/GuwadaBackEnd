@@ -21,8 +21,8 @@ public class Kitchen {
     private String descriptioin;
     private String ownerId;
     private String workignHours;
-    private String rating;
-    private KitechenType type=KitechenType.HOTEL;
+    private String rating="0";
+    private KitechenType type;
     private boolean isOpen;
     private ArrayList<Menu> menu;
 
@@ -32,8 +32,8 @@ public class Kitchen {
        return type.toString();
     }
 
-    public void setType(String type){
-        this.type=KitechenType.valueOf(type);
+    public void setType(String typee){
+        type=KitechenType.valueOf(typee);
     }
 
 

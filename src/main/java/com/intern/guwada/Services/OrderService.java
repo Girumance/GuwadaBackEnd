@@ -5,6 +5,7 @@ import com.intern.guwada.Components.CustomerOrder;
 import com.intern.guwada.Components.CustomerWrapper;
 import com.intern.guwada.Components.MealOrderWrapper;
 import com.intern.guwada.Components.OrderWrapper;
+import com.intern.guwada.Constants.OrderStatus;
 import com.intern.guwada.Domain.*;
 import com.intern.guwada.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,9 @@ public class OrderService {
     @Autowired
     AccountService accountService;
 
-    public ArrayList<CustomerOrder> getOrdersByKitchenId(String kitchenid) {
-        Sort sort =new Sort(Sort.Direction.DESC, "date");
-        ArrayList<Order> order=orderRepository.getOrdersByKitchenId(kitchenid,sort);
+    public ArrayList<CustomerOrder> getOrdersByKitchenId(String kitchenid,OrderStatus orderStatus) {
+        Sort sort =new Sort(Sort.Direction.ASC, "date");
+        ArrayList<Order> order=orderRepository.getOrderByKitchenIdAndOrderStatus(kitchenid,orderStatus.toString(),sort);
         ArrayList<CustomerOrder> customerOrders=new ArrayList<>();
         for (Order order1:order){
 
@@ -37,6 +38,7 @@ public class OrderService {
             customerOrder.setCustomer(wrapper);
             customerOrder.setOrderId(order1.getId());
             customerOrder.setDateTime(order1.getDate());
+            customerOrder.setOrderStatus(order1.getOrderStatus());
             customerOrders.add(customerOrder);
 
         }
@@ -79,6 +81,39 @@ public class OrderService {
         return orderRepository.save(order) != null ? true : false;
 
     }
+
+
+    public void deleteOrder(String id){
+
+        orderRepository.deleteById(id);
+
+    }
+
+    public void makeItDelivered(String id){
+
+        Optional<Order> order=orderRepository.findById(id);
+
+        if(order.isPresent()){
+            orderRepository.delete(order.get());
+            order.get().setOrderStatus(OrderStatus.Delivered.toString());
+            orderRepository.save(order.get());
+        }
+
+    }
+
+    public void makeItOnProcess(String id){
+
+        Optional<Order> order=orderRepository.findById(id);
+
+        if(order.isPresent()){
+            orderRepository.delete(order.get());
+            order.get().setOrderStatus(OrderStatus.OnProcess.toString());
+            orderRepository.save(order.get());
+        }
+
+    }
+
+
 
 
 }

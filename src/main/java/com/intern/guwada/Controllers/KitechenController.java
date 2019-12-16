@@ -2,6 +2,7 @@ package com.intern.guwada.Controllers;
 
 
 import com.intern.guwada.Components.MenuDeleteWrapper;
+import com.intern.guwada.Components.SearchWraper;
 import com.intern.guwada.Domain.Kitchen;
 import com.intern.guwada.Domain.Menu;
 import com.intern.guwada.Services.KitechenService;
@@ -24,22 +25,7 @@ public class KitechenController {
     @PostMapping("/save")
     public String saveKitechen(@RequestBody Kitchen kitechen) {
 
-        int val = kitechenService.saveKitechen(kitechen);
-
-        switch (val) {
-            case -1:
-                return "-1";
-
-            case 0:
-                return "0";
-            case 1:
-                return "1";
-            case 2:
-                return "2";
-
-        }
-
-        return "2";
+        return kitechenService.saveKitechen(kitechen);
     }
 
 
@@ -68,11 +54,19 @@ public class KitechenController {
         return kitechenService.getMenuById(id);
     }
 
+    @GetMapping("/getrealmenu/{id}")
+    public ArrayList<Menu> getRealMenuById(@PathVariable String id) {
+
+        return kitechenService.getMenuByRealId(id);
+    }
+
+
     @GetMapping("/isKitchen/{id}")
-    public boolean isKitchenAvaliableById(@PathVariable String id){
+    public String isKitchenAvaliableById(@PathVariable String id){
+        Kitchen kit=kitechenService.getByOwnerId(id);
+        return  kit==null ? "false" :kit.getId();
 
 
-        return  kitechenService.getByOwnerId(id)==null ? false :true;
     }
 
 
@@ -88,7 +82,7 @@ public class KitechenController {
 
     }
 
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public int deleteMenu(@PathVariable String id, @RequestBody MenuDeleteWrapper title) {
         return kitechenService.deleteMenu(id, title.getTitle());
 
@@ -99,6 +93,18 @@ public class KitechenController {
 
         return kitechenService.addMenu(id,menu);
     }
+
+    @PostMapping("/search")
+    public ArrayList<SearchWraper> search(@RequestBody SearchWraper search){
+        return kitechenService.search(search.getSearch());
+        }
+
+        @GetMapping("/bytitle/{title}")
+        public String getKitByTitle(@PathVariable String title){
+
+        Kitchen kitchen=kitechenService.getKitchenByTitle(title.toUpperCase());
+        return kitchen ==null? "" :kitchen.getId();
+        }
 
 
 }

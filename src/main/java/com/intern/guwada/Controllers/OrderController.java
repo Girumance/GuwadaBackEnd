@@ -3,6 +3,7 @@ package com.intern.guwada.Controllers;
 
 import com.intern.guwada.Components.CustomerOrder;
 import com.intern.guwada.Components.OrderWrapper;
+import com.intern.guwada.Constants.OrderStatus;
 import com.intern.guwada.Domain.MealOrder;
 import com.intern.guwada.Domain.Order;
 import com.intern.guwada.Services.OrderService;
@@ -28,11 +29,26 @@ public class OrderController {
     }
 
 
-    @GetMapping("/kitchenorder/{id}")
-    public ArrayList<CustomerOrder> getOrderByKitchen(@PathVariable  String id){
+    @GetMapping("/pending/{id}")
+    public ArrayList<CustomerOrder> getPendingOrderByKitchen(@PathVariable  String id){
 
-        return orderService.getOrdersByKitchenId(id);
+        return orderService.getOrdersByKitchenId(id, OrderStatus.Pending);
     }
+
+    @GetMapping("/onprocessorder/{id}")
+    public ArrayList<CustomerOrder> getOnprocessOrderByKitchen(@PathVariable  String id){
+
+        return orderService.getOrdersByKitchenId(id, OrderStatus.OnProcess);
+    }
+
+    @GetMapping("/deliveredorder/{id}")
+    public ArrayList<CustomerOrder> getDeliveredOrderByKitchen(@PathVariable  String id){
+
+        return orderService.getOrdersByKitchenId(id, OrderStatus.Delivered);
+    }
+
+
+
     @GetMapping("/get/{id}")
     public ArrayList<MealOrder> getOrderById(@PathVariable  String id){
 
@@ -47,5 +63,24 @@ public class OrderController {
         return  new Order();
 
 
+    }
+
+    @GetMapping("/delete/{id}")
+    public void DeleteOrder(@PathVariable String id){
+        orderService.deleteOrder(id);
+
+    }
+
+    @GetMapping("/makedelivered/{id}")
+    public void makeItDelivered(@PathVariable String id){
+        orderService.makeItDelivered(id);
+
+    }
+
+
+    @GetMapping("/makeonprocess/{id}")
+    public void makeItOnProcess(@PathVariable String id){
+
+        orderService.makeItOnProcess(id);
     }
 }

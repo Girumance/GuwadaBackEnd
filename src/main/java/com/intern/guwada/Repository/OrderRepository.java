@@ -13,8 +13,10 @@ public interface OrderRepository  extends MongoRepository<Order,String> {
 
     public ArrayList<Order> getOrdersByCustomerId(String id);
 
-    //@Query(value = "{orderStatus: Pending}")
-    public ArrayList<Order> getOrdersByKitchenId(String id,Sort sort);
+    //@Query(value = "{orderStatus: ?0}")
+    public ArrayList<Order> getOrderByKitchenIdAndOrderStatus(String id,String status,Sort sort);
+
+
 
 
 

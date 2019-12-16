@@ -1,5 +1,6 @@
 package com.intern.guwada.Controllers;
 
+import com.intern.guwada.Components.NewPassWrapper;
 import com.intern.guwada.Domain.Account;
 import com.intern.guwada.Services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,21 @@ public class AccountController {
     @PostMapping("/signup")
     public boolean createAccount(@RequestBody Account account){
 
-        if(service.createAccount(account)==true) return true;
-        else return  false;
+         return  service.createAccount(account);
+
+    }
+
+    @PostMapping("/changePassword")
+    public int changePassword(@RequestBody NewPassWrapper newPassWrapper){
+
+           return service.changePassword(newPassWrapper);
+    }
+
+    @PostMapping("/update")
+    public Account updateAccount(@RequestBody Account account){
+
+        return service.updateAccount(account);
+
     }
 
 }
